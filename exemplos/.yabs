@@ -1,0 +1,29 @@
+-- programa em lua
+return {
+	tasks = {
+
+		run = {
+			command = "mono " .. vim.fn.expand("%:p:r") .. ".exe",
+			output = "quickfix",
+		},
+
+		["local-build"] = {
+			command = function()
+				local current_file = vim.api.nvim_buf_get_name(0)
+				local dirname = vim.fn.fnamemodify(current_file, ":h")
+				local compile = "mcs " .. vim.fn.expand("%:p")
+				local cmd = "cd " .. dirname .. " && " .. compile
+
+				local console = require("config.console")
+				console.exec(cmd)
+			end,
+			output = "quickfix",
+			type = "lua",
+		},
+
+		clean = {
+			command = "rm " .. vim.fn.expand("%:p:r") .. ".exe",
+			output = "quickfix",
+		},
+	},
+}
